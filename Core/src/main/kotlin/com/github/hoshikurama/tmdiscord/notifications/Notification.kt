@@ -5,7 +5,6 @@ import com.github.hoshikurama.tmdiscord.Targets
 import com.google.common.io.ByteArrayDataOutput
 import com.google.common.io.ByteStreams
 import dev.kord.rest.builder.message.EmbedBuilder
-import io.ktor.utils.io.core.*
 
 interface Notification {
 

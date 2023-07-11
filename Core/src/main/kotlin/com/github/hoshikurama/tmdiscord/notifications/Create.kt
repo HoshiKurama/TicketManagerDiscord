@@ -4,26 +4,26 @@ import com.github.hoshikurama.tmdiscord.Locale
 import com.github.hoshikurama.tmdiscord.Target
 import dev.kord.rest.builder.message.EmbedBuilder
 
-class Assign(
+class Create(
     private val user: Target,
     private val ticketID: String,
-    private val assignment: Target,
+    private val comment: String,
 ) : Notification {
 
     override val embedBuilder: EmbedBuilder.(Locale) -> Unit = {
         field {
-            value = assignment.name
-            name = it.embedOnAssign
+            name = it.embedOnCreate
                 .replace("%user%", user.name)
                 .replace("%num%", ticketID)
+            value = comment
             inline = false
         }
     }
 
     override fun serialize(): ByteArray = createByteArrayMessage {
-        writeUTF(Notification.Type.ASSIGN.toString())
+        writeUTF(Notification.Type.CREATE.toString())
         writeUTF(user.toString())
         writeUTF(ticketID)
-        writeUTF(assignment.toString())
+        writeUTF(comment)
     }
 }
