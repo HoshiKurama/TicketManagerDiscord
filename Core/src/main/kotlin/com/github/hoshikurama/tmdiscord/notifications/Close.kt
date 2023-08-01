@@ -1,6 +1,6 @@
 package com.github.hoshikurama.tmdiscord.notifications
 
-import com.github.hoshikurama.tmdiscord.Locale
+import com.github.hoshikurama.tmdiscord.ClientLocale
 import com.github.hoshikurama.tmdiscord.Target
 import dev.kord.rest.builder.message.EmbedBuilder
 
@@ -10,7 +10,7 @@ class Close(
     private val comment: String?,
 ) : Notification {
 
-    override val embedBuilder: EmbedBuilder.(Locale) -> Unit = {
+    override val embedBuilder: EmbedBuilder.(ClientLocale) -> Unit = {
         field {
             name =  it.embedOnClose
                 .replace("%user%", user.name)

@@ -1,0 +1,4 @@
+# RELAY, CLIENT
+Plugin_Mode: 'CLIENT'
+Locale: 'en_ca'
+Auto_Update_Configs: true

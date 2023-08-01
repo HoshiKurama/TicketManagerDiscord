@@ -10,7 +10,5 @@ repositories {
 }
 
 dependencies {
-    implementation("dev.kord:kord-core:0.10.0")
-    implementation("com.google.guava:guava:32.1.1-jre")
-    implementation("org.yaml:snakeyaml:2.0")
+
 }
