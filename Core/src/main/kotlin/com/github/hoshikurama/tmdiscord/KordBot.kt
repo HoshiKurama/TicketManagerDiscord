@@ -22,7 +22,7 @@ class KordBot private constructor(
         }
     }
 
-    suspend fun pushMessage(msg: Notification, locale: Locale) {
+    suspend fun pushMessage(msg: Notification, locale: ClientLocale) {
         channel.createEmbed { msg.embedBuilder(this, locale) }
     }
 }

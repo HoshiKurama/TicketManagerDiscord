@@ -1,0 +1,43 @@
+# ===========================================================
+#      TicketManager Visual Formats
+# ===========================================================
+#                   For Advanced Users:
+# You are likely well-acquainted with AVC files already. This
+# file is misleading. %% represents TEMPLATES and NOT inlines.
+# Only specified templates are allowed.
+#
+#                 For New Users:
+# This file lets you change how the Discord bot looks. Please
+# note the following information:
+#
+#  - Values which look like %this% are called templates. These
+#    get replaced with the right information at run-time.
+#
+#  - The bot only looks for certain templates. Adding templates
+#    to places where they aren’t expected will be ignored.
+#
+#  - Each entry in this file specifies which templates
+#    are allowed.
+#
+#  - Templates may be removed if you choose to do so.
+#
+# Less importantly, TicketManager templates use a different
+# format. %% is an inline pattern in the main plugin, which
+# operates very differently. Trying to use the same syntax
+# between this plugin and that plugin WILL cause undesired
+# behaviour.
+#
+Console_Name: "Console"
+Nobody_Name: "Nobody"
+Embed_OnAssign: "%user% assigned ticket #%num%"
+Embed_OnClose: "%user% closed ticket #%num%"
+Embed_OnCloseAll: "%user% mass-closed tickets"
+Embed_OnComment: "%user% commented on ticket #%num%"
+Embed_OnCreate: "%user% created ticket #%num%"
+Embed_OnReopen: "%user% reopened ticket #%num%"
+Embed_OnPriorityChange: "%user% changed priority of ticket #%num%"
+Priority_Lowest: "Lowest"
+Priority_Low: "Low"
+Priority_Normal: "Normal"
+Priority_High: "High"
+Priority_Highest: "Highest"

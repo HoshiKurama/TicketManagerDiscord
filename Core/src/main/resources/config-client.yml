@@ -1,0 +1,66 @@
+#   ══════════════════════════════════════════════════════════════════════════════════════════════════════════════    #
+#                                                 Discord Bot Settings                                                #
+#   ══════════════════════════════════════════════════════════════════════════════════════════════════════════════    #
+#   TicketManager has the ability to send ticket modification and creation notifications to a channel in your         #
+#   Discord server.                                                                                                   #
+#                                                                                                                     #
+#   Please note that you must generate your own bot token and provide a channel ID for the desired channel.
+#                                                                                                                     #
+#   TicketManager does not send notifications when users perform a command silently.                                  #
+#                                                                                                                     #
+#   For users with multiple servers in proxy mode, consider using a single bot running on the proxy. To enable        #
+#   this behaviour, enable the discord bot and then enable forwarding discord messages to the proxy.                  #
+#                                                                                                                     #
+#   ──────────────────────────────────────────────────────────────────────────────────────────────────────────────    #
+Use_Discord_Bot: false
+#   Enable or disable the Discord bot.                                                                                #
+#   ──────────────────────────────────────────────────────────────────────────────────────────────────────────────    #
+Discord_Bot_Token: ''
+#   Generated Discord bot token.                                                                                      #
+#   ──────────────────────────────────────────────────────────────────────────────────────────────────────────────    #
+Discord_Channel_ID: -1
+#   Text Channel ID of the channel the bot should send messages to.                                                   #
+#   ──────────────────────────────────────────────────────────────────────────────────────────────────────────────    #
+#                                                                                                                     #
+#                                                                                                                     #
+#                                                                                                                     #
+#   ══════════════════════════════════════════════════════════════════════════════════════════════════════════════    #
+#                                                Notification Settings                                                #
+#   ══════════════════════════════════════════════════════════════════════════════════════════════════════════════    #
+Discord_Notify_On_Assign: true
+#   Send notification when tickets assignments/un-assignments occur.                                                  #
+#   ──────────────────────────────────────────────────────────────────────────────────────────────────────────────    #
+Discord_Notify_On_Close: true
+#   Send notification when a ticket is closed.                                                                        #
+#   ──────────────────────────────────────────────────────────────────────────────────────────────────────────────    #
+Discord_Notify_On_Close_All: true
+#   Send notification when tickets are mass-closed.                                                                   #
+#   ──────────────────────────────────────────────────────────────────────────────────────────────────────────────    #
+Discord_Notify_On_Comment: true
+#   Send notification when a ticket receives a comment.                                                               #
+#   ──────────────────────────────────────────────────────────────────────────────────────────────────────────────    #
+Discord_Notify_On_Create: true
+#   Send notification when a ticket is created.                                                                       #
+#   ──────────────────────────────────────────────────────────────────────────────────────────────────────────────    #
+Discord_Notify_On_Reopen: true
+#   Send notification when a ticket is re-opened.                                                                     #
+#   ──────────────────────────────────────────────────────────────────────────────────────────────────────────────    #
+Discord_Notify_On_Priority_Change: true
+#   Send notification when a ticket's priority is changed.                                                            #
+#   ──────────────────────────────────────────────────────────────────────────────────────────────────────────────    #
+#                                                                                                                     #
+#                                                                                                                     #
+#                                                                                                                     #
+#   ══════════════════════════════════════════════════════════════════════════════════════════════════════════════    #
+#                                                   Other Settings                                                    #
+#   ══════════════════════════════════════════════════════════════════════════════════════════════════════════════    #
+Enable_Advanced_Visual_Control: false
+#   This bot provides a means for end-users to safely configure plugin visuals. When enabled, the plugin will         #
+#   read from and use the visual localization files inside the Discord Bot plugin folder.                             #
+#   Two notable safely precautions occur when enabled:                                                                #
+#       • Missing files re-generate                                                                                   #
+#       • Missing components default to the internal version.                                                         #
+#                                                                                                                     #
+#   Note: If interested in translating TicketManager to your language, please consider contacting HoshiKurama to      #
+#   discuss creating an official translation file!                                                                    #
+#   ──────────────────────────────────────────────────────────────────────────────────────────────────────────────    #

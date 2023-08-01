@@ -13,7 +13,7 @@ sealed interface Target {
 
 object Targets {
 
-    fun deserialize(input: String, locale: Locale): Target {
+    fun deserialize(input: String, locale: ClientLocale): Target {
         val split = input.split(".", limit = 2)
         return when (split[0].run(Target.Type::valueOf)) {
             Target.Type.CONSOLE -> Console(locale)
@@ -39,12 +39,12 @@ object Targets {
         override fun serialize() = "${Target.Type.PHRASE.name}.$name"
     }
 
-    class Console(locale: Locale) : Target {
+    class Console(locale: ClientLocale) : Target {
         override val name = locale.consoleName
         override fun serialize() = Target.Type.CONSOLE.name
     }
 
-    class Nobody(locale: Locale) : Target {
+    class Nobody(locale: ClientLocale) : Target {
         override val name = locale.nobodyName
         override fun serialize() = Target.Type.NOBODY.name
     }
