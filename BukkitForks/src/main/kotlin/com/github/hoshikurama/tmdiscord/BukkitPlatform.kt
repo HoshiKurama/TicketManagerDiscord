@@ -93,7 +93,7 @@ class BukkitPlatform : JavaPlugin(), Listener {
         if (relayNow != null) {
             val notification = buildNotification(modifyEvent, relayNow.locale)
             if (relayNow.canSendMessage(notification))
-                server.sendPluginMessage(this, Server2Proxy.DiscordMessage.channel, notification.serialize())
+                server.sendPluginMessage(this, Server2Proxy.DiscordMessage.waterfallString(), notification.serialize())
         } else if (clientNow != null) {
             val notification = buildNotification(modifyEvent, clientNow.locale)
             if (clientNow.canSendMessage(notification))

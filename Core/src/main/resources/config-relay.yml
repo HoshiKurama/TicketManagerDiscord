@@ -49,3 +49,16 @@ Discord_Notify_On_Reopen: true
 Discord_Notify_On_Priority_Change: true
 #   Send notification when a ticket's priority is changed.                                                            #
 #   ──────────────────────────────────────────────────────────────────────────────────────────────────────────────    #
+#   ══════════════════════════════════════════════════════════════════════════════════════════════════════════════    #
+#                                                   Other Settings                                                    #
+#   ══════════════════════════════════════════════════════════════════════════════════════════════════════════════    #
+Enable_Advanced_Visual_Control: false
+#   This bot provides a means for end-users to safely configure plugin visuals. When enabled, the plugin will         #
+#   read from and use the visual localization files inside the Discord Bot plugin folder.                             #
+#   Two notable safely precautions occur when enabled:                                                                #
+#       • Missing files re-generate                                                                                   #
+#       • Missing components default to the internal version.                                                         #
+#                                                                                                                     #
+#   Note: If interested in translating TicketManager to your language, please consider contacting HoshiKurama to      #
+#   discuss creating an official translation file!                                                                    #
+#   ──────────────────────────────────────────────────────────────────────────────────────────────────────────────    #

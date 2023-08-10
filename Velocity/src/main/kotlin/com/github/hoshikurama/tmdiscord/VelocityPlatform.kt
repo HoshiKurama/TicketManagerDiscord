@@ -28,7 +28,7 @@ import java.nio.file.Path
 class VelocityPlatform @Inject constructor(
     private val server: ProxyServer,
     private val logger: Logger,
-    @DataDirectory val dataDirectory: Path,
+    @DataDirectory private val dataDirectory: Path,
 ) {
     @OptIn(ExperimentalCoroutinesApi::class, DelicateCoroutinesApi::class)
     private val kordThread = newSingleThreadContext("TMDiscordBot_Kord")
