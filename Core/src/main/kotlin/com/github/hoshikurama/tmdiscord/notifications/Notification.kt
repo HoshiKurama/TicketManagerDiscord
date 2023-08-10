@@ -3,7 +3,6 @@ package com.github.hoshikurama.tmdiscord.notifications
 import com.github.hoshikurama.ticketmanager.api.common.ticket.Ticket
 import com.github.hoshikurama.tmdiscord.mode.client.ClientLocale
 import com.github.hoshikurama.tmdiscord.Targets
-import com.github.hoshikurama.tmdiscord.mode.client.ClientConfig
 import com.github.hoshikurama.tmdiscord.notifications.Notification.Type.*
 import com.google.common.io.ByteArrayDataOutput
 import com.google.common.io.ByteStreams

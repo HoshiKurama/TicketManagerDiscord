@@ -2,17 +2,10 @@ package com.github.hoshikurama.tmdiscord.mode.client
 
 import com.github.hoshikurama.tmdiscord.*
 import com.github.hoshikurama.tmdiscord.mode.CommonConfig
-import com.github.hoshikurama.tmdiscord.mode.classLoader
 import com.github.hoshikurama.tmdiscord.mode.standardModeLoad
 import com.github.hoshikurama.tmdiscord.notifications.*
 import com.github.hoshikurama.tmdiscord.utility.*
-import java.io.InputStream
-import java.io.InputStreamReader
-import java.nio.file.Files
 import java.nio.file.Path
-import kotlin.io.path.Path
-import kotlin.io.path.notExists
-import kotlin.io.path.pathString
 
 private const val FILENAME = "config-client.yml"
 

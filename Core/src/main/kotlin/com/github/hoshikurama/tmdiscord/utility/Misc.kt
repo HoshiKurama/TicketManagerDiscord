@@ -4,12 +4,9 @@ import com.github.hoshikurama.ticketmanager.api.common.commands.CommandSender
 import com.github.hoshikurama.ticketmanager.api.common.ticket.Action
 import com.github.hoshikurama.ticketmanager.api.common.ticket.ActionInfo
 import com.github.hoshikurama.ticketmanager.api.common.ticket.Assignment
-import com.github.hoshikurama.ticketmanager.api.common.ticket.Ticket
 import com.github.hoshikurama.tmdiscord.CommonLocaleWords
 import com.github.hoshikurama.tmdiscord.Target
 import com.github.hoshikurama.tmdiscord.Targets
-import com.github.hoshikurama.tmdiscord.mode.relay.RelayLocale
-import com.github.hoshikurama.tmdiscord.mode.client.ClientLocale
 import com.github.hoshikurama.tmdiscord.notifications.*
 
 fun <T> resultFailure(msg: String): Result<T> = Exception(msg).let(Result.Companion::failure)
