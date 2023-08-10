@@ -13,7 +13,8 @@ import net.md_5.bungee.event.EventHandler
 class WaterfallPlatform: Plugin() {
 
     @OptIn(ExperimentalCoroutinesApi::class, DelicateCoroutinesApi::class)
-    val kordScope = CoroutineScope(newSingleThreadContext("TMDiscordBot_Kord"))
+    private val kordThread = newSingleThreadContext("TMDiscordBot_Kord")
+    private val kordScope = CoroutineScope(kordThread)
     private lateinit var client: ClientMode
 
     override fun onEnable() {
@@ -58,6 +59,7 @@ class WaterfallPlatform: Plugin() {
         runBlocking {
             client.kordBot.logout()
         }
+        kordThread.close()
     }
 
     @EventHandler

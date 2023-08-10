@@ -31,7 +31,8 @@ class VelocityPlatform @Inject constructor(
     @DataDirectory val dataDirectory: Path,
 ) {
     @OptIn(ExperimentalCoroutinesApi::class, DelicateCoroutinesApi::class)
-    val kordScope = CoroutineScope(newSingleThreadContext("TMDiscordBot_Kord"))
+    private val kordThread = newSingleThreadContext("TMDiscordBot_Kord")
+    private val kordScope = CoroutineScope(kordThread)
     private val discordMessage = Server2Proxy.DiscordMessage.applySettings()
     private lateinit var client: ClientMode
 
@@ -79,6 +80,7 @@ class VelocityPlatform @Inject constructor(
         runBlocking {
             client.kordBot.logout()
         }
+        kordThread.close()
     }
 
 
