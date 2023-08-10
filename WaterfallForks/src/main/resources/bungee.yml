@@ -1,0 +1,4 @@
+name: 'TicketManager-Discord-Bot'
+main: 'com.github.hoshikurama.tmdiscord.WaterfallPlatform'
+version: '2.0.0'
+author: 'HoshiKurama'

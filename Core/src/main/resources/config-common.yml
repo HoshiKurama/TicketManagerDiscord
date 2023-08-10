@@ -1,4 +1,58 @@
-# RELAY, CLIENT
+# ╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳ #
+# ╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳ #
+#                                              TicketManager Discord Bot                                              #
+#                                                     Version 2.0.0                                                   #
+# ╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳ #
+# ╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳ #
+#   Information:                                                                                                      #
+#       • Proudly Made By: HoshiKurama.                                                                               #
+#       • Targets API 10.x.x.                                                                                         #
+#                                                                                                                     #
+# ╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳ #
+# ╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳ #
+#                                                                                                                     #
+#                                                                                                                     #
+#                                                                                                                     #
+#                                                                                                                     #
+#                                                                                                                     #
+#   ══════════════════════════════════════════════════════════════════════════════════════════════════════════════    #
+#                                                     Plugin Mode                                                     #
+#   ══════════════════════════════════════════════════════════════════════════════════════════════════════════════    #
+#   This Discord Bot can operate in one of two modes:                                                                 #
+#       • Client Mode: Runs the bot itself. It will either directly listen to TM events or listen to plugin           #
+#         channels depending on the platform. Use this if you only have 1 server or want 1 bot per server.            #
+#       • Relay Mode: Instructs the bot to instead relay messages to the client mode on your proxy. Use this if       #
+#         you have multiple servers proxied together and only want 1 bot.                                             #
+#                                                                                                                     #
+#   End-users with a network can choose to have multiple bots or just one bot based on their own needs. However,      #
+#   both solution have an equal amount of control over message filtering.                                             #
+#                                                                                                                     #
+#   Options: 'RELAY', 'CLIENT'                                                                                        #
 Plugin_Mode: 'CLIENT'
+#   ══════════════════════════════════════════════════════════════════════════════════════════════════════════════    #
+#                                                Localization Settings                                                #
+#   ══════════════════════════════════════════════════════════════════════════════════════════════════════════════    #
+#   The Discord Bot supports localization into supported languages.                                                   #
+#                                                                                                                     #
+#   Exceptions for localizations are                                                                                  #
+#       • Player names                                                                                                #
+#       • Ticket comments.                                                                                            #
+#                                                                                                                     #
+#                                              Supported Localizations:                                               #
+#                                     ╔═══════════╤══════════════════════════════╗                                    #
+#                                     ║   Value   │           Language           ║                                    #
+#                                     ╠═══════════╪══════════════════════════════╣                                    #
+#                                     ║  'de_de'  │ German                       ║                                    #
+#                                     ║  'en_ca'  │ Canadian English             ║                                    #
+#                                     ║  'en_uk'  │ UK English                   ║                                    #
+#                                     ║  'en_us'  │ US English                   ║                                    #
+#                                     ║  'fr_fr'  │ French (France)              ║                                    #
+#                                     ╚═══════════╧══════════════════════════════╝                                    #
+#                                                                                                                     #
 Locale: 'en_ca'
+#   ══════════════════════════════════════════════════════════════════════════════════════════════════════════════    #
+#                                               Plugin Update Settings                                                #
+#   ══════════════════════════════════════════════════════════════════════════════════════════════════════════════    #
 Auto_Update_Configs: true
+#   Allow this config file to automatically update and transfer existing config settings.                             #
+#   ──────────────────────────────────────────────────────────────────────────────────────────────────────────────    #

@@ -1,4 +1,6 @@
 
 rootProject.name = "TicketManagerDiscord"
 include("Core")
-include("Application")
+include("BukkitForks")
+include("Velocity")
+include("WaterfallForks")

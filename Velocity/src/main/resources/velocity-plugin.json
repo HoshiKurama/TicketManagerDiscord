@@ -1,0 +1,9 @@
+{
+  "id": "tmdiscordbot",
+  "name": "TicketManager_Discord_Bot",
+  "version": "2.0.0",
+  "description": "Official Discord Bot for TicketManager",
+  "authors": ["HoshiKurama"],
+  "dependencies": [],
+  "main": "com.github.hoshikurama.tmdiscord.VelocityPlatform"
+}

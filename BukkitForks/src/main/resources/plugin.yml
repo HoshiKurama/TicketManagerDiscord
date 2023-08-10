@@ -1,0 +1,6 @@
+name: TMDiscordBot
+version: 2.0.0
+main: com.github.hoshikurama.tmdiscord.BukkitPlatform
+api-version: 1.18
+authors: [HoshiKurama]
+depend: [TicketManager]

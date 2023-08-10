@@ -1,28 +1,38 @@
 package com.github.hoshikurama.tmdiscord
 
+import com.github.hoshikurama.tmdiscord.mode.client.ClientLocale
 import com.github.hoshikurama.tmdiscord.notifications.Notification
+import com.github.hoshikurama.tmdiscord.utility.resultFailure
 import dev.kord.common.entity.Snowflake
 import dev.kord.core.Kord
 import dev.kord.core.behavior.channel.MessageChannelBehavior
 import dev.kord.core.behavior.channel.createEmbed
-import java.lang.Exception
 
-class KordBot private constructor(
+class KordBot(
     private val kord: Kord,
     private val channel: MessageChannelBehavior,
 ) {
     suspend fun login() = kord.login()
-
-    companion object {
-        suspend fun build(token: String, channelSnowflakeID: Long): KordBot {
-            val kord = Kord(token)
-            val notifyChannel: MessageChannelBehavior = kord.getChannelOf(id = Snowflake(channelSnowflakeID))
-                ?: throw Exception("Invalid Channel Snowflake ID")
-            return KordBot(kord, notifyChannel)
-        }
-    }
+    suspend fun logout() = kord.logout()
 
     suspend fun pushMessage(msg: Notification, locale: ClientLocale) {
         channel.createEmbed { msg.embedBuilder(this, locale) }
+    }
+
+    companion object {
+
+        suspend fun instance(token: String, channelID: Long): Result<KordBot> {
+            return try {
+                val kord = Kord(token)
+                val notifyChannel: MessageChannelBehavior = kord.getChannelOf(id = Snowflake(channelID))
+                    ?: return resultFailure("Invalid Channel ID: $channelID")
+
+                KordBot(kord, notifyChannel)
+                    .run(Result.Companion::success)
+
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+        }
     }
 }

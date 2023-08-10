@@ -1,0 +1,51 @@
+# ╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳ #
+# ╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳ #
+#                                              TicketManager Discord Bot                                              #
+#                                                     Version 2.0.0                                                   #
+# ╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳ #
+# ╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳ #
+#   Information:                                                                                                      #
+#       • Proudly Made By: HoshiKurama.                                                                               #
+#       • Targets API 10.x.x.                                                                                         #
+#                                                                                                                     #
+# ╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳ #
+# ╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳ #
+#                                                                                                                     #
+#                                                                                                                     #
+#                                                                                                                     #
+#                                                                                                                     #
+#                                                                                                                     #
+#   ══════════════════════════════════════════════════════════════════════════════════════════════════════════════    #
+#                                                Notification Settings                                                #
+#   ══════════════════════════════════════════════════════════════════════════════════════════════════════════════    #
+#   Users can control which events are broadcasted to Discord via two controls:                                       #
+#     • Client Controls: For single-server users, these are your standard controls. For proxy users, these act as     #
+#       a final filter or a point of singular control.                                                                #
+#     • Relay Controls: Only applicable to users operating the bot on a proxy, these act as a per-server control,     #
+#       allowing users to select certain message types depending on the server.                                       #
+#                                                                                                                     #
+#   These controls are found in their associated config files. Explicitly, notification settings in THIS config       #
+#   are for the relay controls.                                                                                       #
+#                                                                                                                     #
+#   ──────────────────────────────────────────────────────────────────────────────────────────────────────────────    #
+Discord_Notify_On_Assign: true
+#   Send notification when tickets assignments/un-assignments occur.                                                  #
+#   ──────────────────────────────────────────────────────────────────────────────────────────────────────────────    #
+Discord_Notify_On_Close: true
+#   Send notification when a ticket is closed.                                                                        #
+#   ──────────────────────────────────────────────────────────────────────────────────────────────────────────────    #
+Discord_Notify_On_Close_All: true
+#   Send notification when tickets are mass-closed.                                                                   #
+#   ──────────────────────────────────────────────────────────────────────────────────────────────────────────────    #
+Discord_Notify_On_Comment: true
+#   Send notification when a ticket receives a comment.                                                               #
+#   ──────────────────────────────────────────────────────────────────────────────────────────────────────────────    #
+Discord_Notify_On_Create: true
+#   Send notification when a ticket is created.                                                                       #
+#   ──────────────────────────────────────────────────────────────────────────────────────────────────────────────    #
+Discord_Notify_On_Reopen: true
+#   Send notification when a ticket is re-opened.                                                                     #
+#   ──────────────────────────────────────────────────────────────────────────────────────────────────────────────    #
+Discord_Notify_On_Priority_Change: true
+#   Send notification when a ticket's priority is changed.                                                            #
+#   ──────────────────────────────────────────────────────────────────────────────────────────────────────────────    #

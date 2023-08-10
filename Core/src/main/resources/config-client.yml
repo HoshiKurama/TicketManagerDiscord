@@ -1,19 +1,29 @@
+# ╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳ #
+# ╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳ #
+#                                              TicketManager Discord Bot                                              #
+#                                                     Version 2.0.0                                                   #
+# ╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳ #
+# ╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳ #
+#   Information:                                                                                                      #
+#       • Proudly Made By: HoshiKurama.                                                                               #
+#       • Targets API 10.x.x.                                                                                         #
+#                                                                                                                     #
+# ╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳ #
+# ╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳╳ #
+#                                                                                                                     #
+#                                                                                                                     #
+#                                                                                                                     #
+#                                                                                                                     #
+#                                                                                                                     #
 #   ══════════════════════════════════════════════════════════════════════════════════════════════════════════════    #
 #                                                 Discord Bot Settings                                                #
 #   ══════════════════════════════════════════════════════════════════════════════════════════════════════════════    #
-#   TicketManager has the ability to send ticket modification and creation notifications to a channel in your         #
-#   Discord server.                                                                                                   #
+#   This plugin will run a discord bot which can forward ticket creation and modification events to a channel in
+#   your Discord server. Silent commands are currently exempted for obvious reasons.                                  #
 #                                                                                                                     #
-#   Please note that you must generate your own bot token and provide a channel ID for the desired channel.
+#   Please note that you must generate your own bot token and provide a channel ID for the desired channel.           #
+#   Additionally, For users with multiple servers in proxy mode, consider using one bot running on the proxy.         #
 #                                                                                                                     #
-#   TicketManager does not send notifications when users perform a command silently.                                  #
-#                                                                                                                     #
-#   For users with multiple servers in proxy mode, consider using a single bot running on the proxy. To enable        #
-#   this behaviour, enable the discord bot and then enable forwarding discord messages to the proxy.                  #
-#                                                                                                                     #
-#   ──────────────────────────────────────────────────────────────────────────────────────────────────────────────    #
-Use_Discord_Bot: false
-#   Enable or disable the Discord bot.                                                                                #
 #   ──────────────────────────────────────────────────────────────────────────────────────────────────────────────    #
 Discord_Bot_Token: ''
 #   Generated Discord bot token.                                                                                      #
@@ -27,6 +37,16 @@ Discord_Channel_ID: -1
 #   ══════════════════════════════════════════════════════════════════════════════════════════════════════════════    #
 #                                                Notification Settings                                                #
 #   ══════════════════════════════════════════════════════════════════════════════════════════════════════════════    #
+#   Users can control which events are broadcasted to Discord via two controls:                                       #
+#     • Client Controls: For single-server users, these are your standard controls. For proxy users, these act as     #
+#       a final filter or a point of singular control.                                                                #
+#     • Relay Controls: Only applicable to users operating the bot on a proxy, these act as a per-server control,     #
+#       allowing users to select certain message types depending on the server.                                       #
+#                                                                                                                     #
+#   These controls are found in their associated config files. Explicitly, notification settings in THIS config       #
+#   are for the client controls.                                                                                      #
+#                                                                                                                     #
+#   ──────────────────────────────────────────────────────────────────────────────────────────────────────────────    #
 Discord_Notify_On_Assign: true
 #   Send notification when tickets assignments/un-assignments occur.                                                  #
 #   ──────────────────────────────────────────────────────────────────────────────────────────────────────────────    #
