@@ -11,7 +11,7 @@ application {
 }
 
 group = "com.github.hoshikurama"
-version = "1.0-SNAPSHOT"
+version = "2.0.0"
 
 repositories {
     mavenCentral()
@@ -22,7 +22,7 @@ repositories {
 dependencies {
     compileOnly("io.github.waterfallmc:waterfall-api:1.20-R0.1-SNAPSHOT")
 
-    implementation("com.github.HoshiKurama.TicketManager_API:Common:10.0.0-RC34")
+    implementation("com.github.HoshiKurama.TicketManager_API:Common:10.0.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.3")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")

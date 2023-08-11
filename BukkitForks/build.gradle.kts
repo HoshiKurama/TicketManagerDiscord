@@ -11,7 +11,7 @@ application {
 }
 
 group = "com.github.hoshikurama"
-version = "1.0-SNAPSHOT"
+version = "2.0.0"
 
 repositories {
     mavenCentral()
@@ -21,8 +21,8 @@ repositories {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.20-R0.1-SNAPSHOT")
-    compileOnly("com.github.HoshiKurama.TicketManager_API:Paper:10.0.0-RC32")
-    compileOnly("com.github.HoshiKurama.TicketManager_API:Common:10.0.0-RC32")
+    compileOnly("com.github.HoshiKurama.TicketManager_API:Paper:10.0.0")
+    compileOnly("com.github.HoshiKurama.TicketManager_API:Common:10.0.0")
     compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
     compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.3")
     implementation(project(":Core"))
@@ -35,6 +35,8 @@ tasks {
             // Provided by TicketManager
             exclude(dependency("org.jetbrains.kotlin:.*:.*"))
             exclude(dependency("org.jetbrains.kotlinx:.*:.*"))
+            exclude(dependency("com.github.HoshiKurama.TicketManager_API:Common:10.0.0"))
+            exclude(dependency("com.github.HoshiKurama.TicketManager_API:Paper:10.0.0"))
         }
 
         // Provided by TicketManager
