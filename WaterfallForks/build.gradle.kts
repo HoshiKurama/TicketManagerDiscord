@@ -49,6 +49,8 @@ tasks {
         relocate("org.slf4j", "com.github.hoshikurama.tmdiscord.shaded.slf4j")
         relocate("org.intellij", "com.github.hoshikurama.tmdiscord.shaded.intellij")
         relocate("org.jetbrains", "com.github.hoshikurama.tmdiscord.shaded.jetbrains")
+
+        relocate("com.github.hoshikurama.ticketmanager.api", "com.github.hoshikurama.tmdiscord.shaded.ticketmanagerapi")
         //relocate("", "com.github.hoshikurama.tmdiscord.shaded.")
     }
 }
