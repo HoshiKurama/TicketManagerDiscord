@@ -2,7 +2,6 @@ package com.github.hoshikurama.tmdiscord.setup.mode
 
 import com.github.hoshikurama.tmdiscord.*
 import com.github.hoshikurama.tmdiscord.notifications.*
-import com.github.hoshikurama.tmdiscord.setup.*
 import com.github.hoshikurama.tmdiscord.setup.config.ClientConfig
 import com.github.hoshikurama.tmdiscord.setup.config.CommonConfig
 import com.github.hoshikurama.tmdiscord.setup.locale.ClientLocale

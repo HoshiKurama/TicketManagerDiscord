@@ -21,14 +21,6 @@ inline fun <reified T> Any.asOrThrow() = this as T
 fun <T> resultFailure(msg: String): Result<T> = Exception(msg)
     .let(Result.Companion::failure)
 
-inline fun <T> Result<T>.recoverPossibly(transform: (Throwable) -> Result<T>): Result<T> {
-    return this.recover { throwable ->
-        transform(throwable)
-            .onFailure { return Result.failure(it) }
-            .getOrThrow()
-    }
-}
-
 inline fun <T, U> Result<T>.compose(f: (T) -> Result<U>): Result<U> {
     if (isFailure) return Result.failure(exceptionOrNull()!!)
     return try { getOrThrow().run(f) }
