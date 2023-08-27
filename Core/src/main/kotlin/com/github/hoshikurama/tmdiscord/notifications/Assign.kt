@@ -1,6 +1,6 @@
 package com.github.hoshikurama.tmdiscord.notifications
 
-import com.github.hoshikurama.tmdiscord.mode.client.ClientLocale
+import com.github.hoshikurama.tmdiscord.setup.locale.ClientLocale
 import com.github.hoshikurama.tmdiscord.Target
 import dev.kord.rest.builder.message.EmbedBuilder
 

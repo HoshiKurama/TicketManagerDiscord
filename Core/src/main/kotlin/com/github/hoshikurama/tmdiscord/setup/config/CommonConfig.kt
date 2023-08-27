@@ -1,6 +1,6 @@
-package com.github.hoshikurama.tmdiscord.mode
+package com.github.hoshikurama.tmdiscord.setup.config
 
-import com.github.hoshikurama.tmdiscord.PluginMode
+import com.github.hoshikurama.tmdiscord.setup.mode.Mode
 import com.github.hoshikurama.tmdiscord.utility.*
 import java.io.InputStream
 import java.io.InputStreamReader
@@ -10,9 +10,10 @@ import kotlin.io.path.exists
 private const val FILENAME = "config-common.yml"
 
 class CommonConfig(
-    val mode: PluginMode,
+    val mode: Mode.Enum,
     val desiredLocaleStr: String,
-    val autoUpdateConfigs: Boolean
+    val autoUpdateConfigs: Boolean,
+    val printCaughtErrors: Boolean,
 ) {
     companion object {
         fun load(dataFolder: Path): Result<CommonConfig> {
@@ -48,12 +49,14 @@ class CommonConfig(
 
             // Builds Config
             return CommonConfig(
-                mode = playerConfigMap["Plugin_Mode"]?.asOrNull<String>()?.run(PluginMode::valueOf)
-                    ?: internalConfigMap["Plugin_Mode"]!!.asOrThrow<String>().run(PluginMode::valueOf),
+                mode = playerConfigMap["Plugin_Mode"]?.asOrNull<String>()?.run(Mode.Enum::valueOf)
+                    ?: internalConfigMap["Plugin_Mode"]!!.asOrThrow<String>().run(Mode.Enum::valueOf),
                 desiredLocaleStr = playerConfigMap["Locale"]?.asOrNull<String>()?.lowercase()
                     ?: internalConfigMap["Locale"]!!.asOrThrow<String>().lowercase(),
-                autoUpdateConfigs = playerConfigMap["Auto_Update_Configs"]!!.asOrNull<Boolean>()
-                    ?: internalConfigMap["Auto_Update_Configs"]!!.asOrThrow<Boolean>()
+                autoUpdateConfigs = playerConfigMap["Auto_Update_Configs"]?.asOrNull()
+                    ?: internalConfigMap["Auto_Update_Configs"]!!.asOrThrow<Boolean>(),
+                printCaughtErrors = playerConfigMap["Print_Caught_Error_Details"]?.asOrNull()
+                    ?: internalConfigMap["Print_Caught_Error_Details"]!!.asOrThrow<Boolean>()
             ).run(Result.Companion::success)
         }
     }

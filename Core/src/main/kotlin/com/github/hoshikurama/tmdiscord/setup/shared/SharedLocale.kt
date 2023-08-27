@@ -1,4 +1,4 @@
-package com.github.hoshikurama.tmdiscord
+package com.github.hoshikurama.tmdiscord.setup.shared
 
 interface CommonLocaleWords {
     val consoleName: String

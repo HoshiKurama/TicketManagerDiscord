@@ -1,27 +1,22 @@
-package com.github.hoshikurama.tmdiscord.mode.relay
+package com.github.hoshikurama.tmdiscord.setup.mode
 
-import com.github.hoshikurama.tmdiscord.mode.CommonConfig
-import com.github.hoshikurama.tmdiscord.mode.standardModeLoad
 import com.github.hoshikurama.tmdiscord.notifications.*
+import com.github.hoshikurama.tmdiscord.setup.*
+import com.github.hoshikurama.tmdiscord.setup.config.CommonConfig
+import com.github.hoshikurama.tmdiscord.setup.config.RelayConfig
+import com.github.hoshikurama.tmdiscord.setup.locale.ClientLocale
+import com.github.hoshikurama.tmdiscord.setup.locale.RelayLocale
+import com.github.hoshikurama.tmdiscord.setup.locale.buildExternalLocale
+import com.github.hoshikurama.tmdiscord.setup.locale.buildInternalLocale
+import com.github.hoshikurama.tmdiscord.setup.shared.SharedPlatform
+import com.github.hoshikurama.tmdiscord.setup.shared.initializeConfig
+import com.github.hoshikurama.tmdiscord.setup.shared.initializeLocale
 import com.github.hoshikurama.tmdiscord.utility.asOrNull
 import com.github.hoshikurama.tmdiscord.utility.asOrThrow
+import com.github.hoshikurama.tmdiscord.utility.unwrapOrReturn
 import java.nio.file.Path
 
 private const val FILENAME = "config-relay.yml"
-
-class RelayConfig(
-    // Discord Notifications
-    val notifyOnAssign: Boolean,
-    val notifyOnClose: Boolean,
-    val notifyOnCloseAll: Boolean,
-    val notifyOnComment: Boolean,
-    val notifyOnCreate: Boolean,
-    val notifyOnReopen: Boolean,
-    val notifyOnPriorityChange: Boolean,
-
-    // Misc
-    val enableAVC: Boolean,
-)
 
 class RelayMode(
     val commonConfig: CommonConfig,
@@ -41,16 +36,17 @@ class RelayMode(
     }
 }
 
-fun RelayMode.Companion.instance(commonConfig: CommonConfig, dataFolder: Path): Result<RelayMode> {
-    val (relayConfig, relayLocale) = standardModeLoad(
+fun RelayMode.Companion.instance(
+    commonConfig: CommonConfig,
+    dataFolder: Path,
+    platformFuncs: SharedPlatform
+): Result<RelayMode> {
+
+    val config = initializeConfig(
         commonConfig = commonConfig,
         dataFolder = dataFolder,
         filename = FILENAME,
-        enableAVC = RelayConfig::enableAVC,
-        internalLocaleFolderName = "relayLocales",
-        buildInternalLocale = RelayLocale::buildInternalLocale,
-        buildExternalLocale = RelayLocale::buildExternalLocale,
-        buildConfig = { playerConfigMap, internalConfigMap ->
+        configBuilder = { (playerConfigMap, internalConfigMap) ->
             fun getOrDefault(ymlStr: String) = playerConfigMap[ymlStr]?.asOrNull<Boolean>()
                 ?: internalConfigMap[ymlStr]!!.asOrThrow<Boolean>()
 
@@ -65,13 +61,23 @@ fun RelayMode.Companion.instance(commonConfig: CommonConfig, dataFolder: Path): 
                 enableAVC = getOrDefault("Enable_Advanced_Visual_Control"),
             )
         }
-    )
-        .onFailure { return Result.failure(it) }
-        .getOrThrow()
+    ).unwrapOrReturn { return Result.failure(it) }
+
+    // Build Locale
+    val locale = initializeLocale(
+        buildInternalLocale = { (name) -> RelayLocale.buildInternalLocale(name) },
+        buildExternalLocale = { (r1, r2, r3) -> RelayLocale.buildExternalLocale(r1, r2, r3) },
+        localeFolderName = "relayLocales",
+        enableAVC = RelayConfig::enableAVC,
+        commonConfig = commonConfig,
+        dataFolder = dataFolder,
+        config = config,
+        platformFuncs = platformFuncs
+    ).unwrapOrReturn { return Result.failure(it) }
 
     return RelayMode(
         commonConfig = commonConfig,
-        relayConfig = relayConfig,
-        locale = relayLocale,
+        relayConfig = config,
+        locale = locale,
     ).run(Result.Companion::success)
 }

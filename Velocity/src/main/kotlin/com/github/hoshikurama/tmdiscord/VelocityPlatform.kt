@@ -1,10 +1,16 @@
 package com.github.hoshikurama.tmdiscord
 
-import com.github.hoshikurama.tmdiscord.mode.CommonConfig
-import com.github.hoshikurama.tmdiscord.mode.client.ClientMode
-import com.github.hoshikurama.tmdiscord.mode.client.instance
+import com.github.hoshikurama.tmdiscord.setup.config.CommonConfig
+import com.github.hoshikurama.tmdiscord.setup.mode.ClientMode
+import com.github.hoshikurama.tmdiscord.setup.mode.instance
 import com.github.hoshikurama.tmdiscord.notifications.Notifications
+import com.github.hoshikurama.tmdiscord.setup.mode.Mode
+import com.github.hoshikurama.tmdiscord.utility.unwrapOrReturn
 import com.google.inject.Inject
+import com.mojang.brigadier.Command
+import com.mojang.brigadier.builder.LiteralArgumentBuilder
+import com.velocitypowered.api.command.BrigadierCommand
+import com.velocitypowered.api.command.CommandSource
 import com.velocitypowered.api.event.Subscribe
 import com.velocitypowered.api.event.connection.PluginMessageEvent
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent
@@ -34,42 +40,74 @@ class VelocityPlatform @Inject constructor(
     private val kordThread = newSingleThreadContext("TMDiscordBot_Kord")
     private val kordScope = CoroutineScope(kordThread)
     private val discordMessage = Server2Proxy.DiscordMessage.applySettings()
-    private lateinit var client: ClientMode
+    private var client: ClientMode? = null
+
+
+    private suspend fun setupClientMode(commonConfig: CommonConfig, primaryDataFolder: Path) {
+        val clientResult = ClientMode.instance(
+            commonConfig = commonConfig,
+            dataFolder = primaryDataFolder,
+            sharedPlatform = logger::error
+        )
+
+        if (clientResult.isSuccess) {
+            client = clientResult.getOrThrow()
+            kordScope.launch { client?.kordBot?.login() }
+        } else {
+            logger.error("An unrecoverable error occurred!")
+            clientResult.exceptionOrNull()?.printStackTrace()
+        }
+    }
+
+    private suspend fun setup() {
+
+        fun printUnrecoverableError(e: Throwable) {
+            logger.error("An unrecoverable error occurred!")
+            e.printStackTrace()
+        }
+
+        val primaryDataFolder = dataDirectory
+            .resolveSibling("TicketManager")
+            .resolve("addons")
+            .resolve("DiscordBot")
+
+        val commonConfig = CommonConfig.load(primaryDataFolder)
+            .unwrapOrReturn {
+                printUnrecoverableError(it)
+                return
+            }
+
+        when (commonConfig.mode) {
+            Mode.Enum.CLIENT -> setupClientMode(commonConfig, primaryDataFolder)
+            Mode.Enum.RELAY -> {
+                logger.error("Relay Mode is NOT allowed on proxies!")
+                return
+            }
+        }
+    }
 
 
     @Subscribe
     @Suppress("UNUSED", "UNUSED_PARAMETER")
     fun onProxyInitialization(event: ProxyInitializeEvent) {
-        val stdErrorReturn: (Throwable) -> Unit = {
-            logger.error(it.message)
-            logger.error("Plugin failed to enable! Plugin effectively disabled until next restart.")
-        }
+        runBlocking { setup() }
+        server.channelRegistrar.register(discordMessage)
 
-        val commonConfig = CommonConfig.load(dataDirectory)
-            .onFailure {
-                stdErrorReturn(it)
-                return@onProxyInitialization
-            }
-            .getOrThrow()
-
-        when (commonConfig.mode) {
-            PluginMode.RELAY -> {
-                logger.error("Relay Mode is NOT allowed on proxies! Plugin effectively disabled until next restart.")
-                return
-            }
-
-            PluginMode.CLIENT -> {
-                client = runBlocking { ClientMode.instance(commonConfig, dataDirectory) }
-                    .onFailure {
-                        stdErrorReturn(it)
-                        return@onProxyInitialization
+        LiteralArgumentBuilder
+            .literal<CommandSource>("tmdiscord")
+            .requires { it.hasPermission("tmdiscord.reload") }
+            .then(LiteralArgumentBuilder.literal<CommandSource>("reload")
+                .executes {
+                    kordScope.launch {
+                        client?.kordBot?.logout()
+                        setup()
                     }
-                    .getOrThrow()
-
-                kordScope.launch { client.kordBot.login() } // Launch and hold coroutine on new thread
-                server.channelRegistrar.register(discordMessage)
-            }
-        }
+                    Command.SINGLE_SUCCESS
+                }
+            )
+            .build()
+            .run(::BrigadierCommand)
+            .run(server.commandManager::register)
     }
 
 
@@ -77,9 +115,7 @@ class VelocityPlatform @Inject constructor(
     @Suppress("UNUSED", "UNUSED_PARAMETER")
     fun onProxyShutdown(event: ProxyShutdownEvent) {
         server.channelRegistrar.unregister(discordMessage)
-        runBlocking {
-            client.kordBot.logout()
-        }
+        runBlocking { client?.kordBot?.logout() }
         kordThread.close()
     }
 
@@ -87,14 +123,13 @@ class VelocityPlatform @Inject constructor(
     @Subscribe
     @Suppress("UNUSED")
     fun onMessage(event: PluginMessageEvent) {
-        when (event.identifier) {
+        val clientCopy = client
 
-            discordMessage ->
-                Notifications.deserialize(event.data, client.locale)
-                    .map { notification ->
-                        if (client.canSendMessage(notification))
-                            kordScope.launch { client.kordBot.pushMessage(notification, client.locale) }
-                    }
+        if (event.identifier == discordMessage && clientCopy != null) {
+            Notifications.deserialize(event.data, clientCopy.locale)
+                .unwrapOrReturn { return }
+                .takeIf(clientCopy::canSendMessage)
+                ?.let { noti -> kordScope.launch { client!!.kordBot.pushMessage(noti, clientCopy.locale) } }
         }
     }
 }

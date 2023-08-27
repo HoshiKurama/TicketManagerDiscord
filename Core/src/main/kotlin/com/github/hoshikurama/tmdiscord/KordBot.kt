@@ -1,6 +1,6 @@
 package com.github.hoshikurama.tmdiscord
 
-import com.github.hoshikurama.tmdiscord.mode.client.ClientLocale
+import com.github.hoshikurama.tmdiscord.setup.locale.ClientLocale
 import com.github.hoshikurama.tmdiscord.notifications.Notification
 import com.github.hoshikurama.tmdiscord.utility.resultFailure
 import dev.kord.common.entity.Snowflake
