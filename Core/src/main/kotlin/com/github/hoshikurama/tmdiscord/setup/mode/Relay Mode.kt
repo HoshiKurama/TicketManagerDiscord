@@ -1,10 +1,8 @@
 package com.github.hoshikurama.tmdiscord.setup.mode
 
 import com.github.hoshikurama.tmdiscord.notifications.*
-import com.github.hoshikurama.tmdiscord.setup.*
 import com.github.hoshikurama.tmdiscord.setup.config.CommonConfig
 import com.github.hoshikurama.tmdiscord.setup.config.RelayConfig
-import com.github.hoshikurama.tmdiscord.setup.locale.ClientLocale
 import com.github.hoshikurama.tmdiscord.setup.locale.RelayLocale
 import com.github.hoshikurama.tmdiscord.setup.locale.buildExternalLocale
 import com.github.hoshikurama.tmdiscord.setup.locale.buildInternalLocale
