@@ -29,7 +29,6 @@ class ClientConfig(
 
 
 class ClientMode(
-    val commonConfig: CommonConfig,
     val clientConfig: ClientConfig,
     val locale: ClientLocale,
     val kordBot: KordBot,
@@ -88,7 +87,6 @@ suspend fun ClientMode.Companion.instance(commonConfig: CommonConfig, dataFolder
 
 
     return ClientMode(
-        commonConfig = commonConfig,
         clientConfig = clientConfig,
         locale = clientLocale,
         kordBot = kordBot,
