@@ -51,8 +51,13 @@ Plugin_Mode: 'CLIENT'
 #                                                                                                                     #
 Locale: 'en_ca'
 #   ══════════════════════════════════════════════════════════════════════════════════════════════════════════════    #
-#                                               Plugin Update Settings                                                #
+#                                                Other Plugin Settings                                                #
 #   ══════════════════════════════════════════════════════════════════════════════════════════════════════════════    #
 Auto_Update_Configs: true
 #   Allow this config file to automatically update and transfer existing config settings.                             #
+#   ──────────────────────────────────────────────────────────────────────────────────────────────────────────────    #
+Print_Caught_Error_Details: false
+#   Certain user-caused errors are caught and recovered from, with the only hint that something went wrong being      #
+#   a single error message in Console. Changing this to true will force a stacktrace print, telling you why the       #
+#   plugin failed.                                                                                                    #
 #   ──────────────────────────────────────────────────────────────────────────────────────────────────────────────    #

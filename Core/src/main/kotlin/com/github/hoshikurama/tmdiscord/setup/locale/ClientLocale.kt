@@ -1,14 +1,11 @@
-package com.github.hoshikurama.tmdiscord.mode.client
+package com.github.hoshikurama.tmdiscord.setup.locale
 
 
-import com.github.hoshikurama.tmdiscord.CommonLocaleWords
-import com.github.hoshikurama.tmdiscord.utility.LoadHelper
-import com.github.hoshikurama.tmdiscord.utility.resultFailure
+import com.github.hoshikurama.tmdiscord.setup.shared.CommonLocaleWords
+import com.github.hoshikurama.tmdiscord.utility.*
 import org.yaml.snakeyaml.Yaml
 import java.nio.file.Files
 import java.nio.file.Path
-import kotlin.io.path.Path
-import kotlin.io.path.pathString
 
 class ClientLocale(
     // Names
@@ -34,50 +31,40 @@ class ClientLocale(
     companion object
 }
 
-
 fun ClientLocale.Companion.buildInternalLocale(localeID: String): Result<ClientLocale> {
-
-    fun loadYML(locale: String) = Path("clientLocales")
-        .resolve("$locale.yml")
-        .pathString
-        .run(LoadHelper.stdLoadYAMLResource)
-        .getOrThrow()
-
-    val map =
-        try { loadYML(localeID).mapValues { it.value as String } }
-        catch (e: Exception) { return resultFailure("Could not read locale: $localeID or an unexpected error has occurred!") }
-
-    return ClientLocale(
-        consoleName = map["Console_Name"]!!,
-        nobodyName = map["Nobody_Name"]!!,
-        embedOnAssign = map["Embed_OnAssign"]!!,
-        embedOnClose = map["Embed_OnClose"]!!,
-        embedOnCloseAll = map["Embed_OnCloseAll"]!!,
-        embedOnComment = map["Embed_OnComment"]!!,
-        embedOnCreate = map["Embed_OnCreate"]!!,
-        embedOnReopen = map["Embed_OnReopen"]!!,
-        embedOnPriorityChange = map["Embed_OnPriorityChange"]!!,
-        priorityLowest = map["Priority_Lowest"]!!,
-        priorityLow = map["Priority_Low"]!!,
-        priorityNormal = map["Priority_Normal"]!!,
-        priorityHigh = map["Priority_High"]!!,
-        priorityHighest = map["Priority_Highest"]!!,
-    ).run(Result.Companion::success)
+    return LoadHelper.stdLoadYAMLResource("clientLocales/$localeID.yml")
+        .map { map -> map.mapValues { it.value as String } }
+        .map { map ->
+            ClientLocale(
+                consoleName = map["Console_Name"]!!,
+                nobodyName = map["Nobody_Name"]!!,
+                embedOnAssign = map["Embed_OnAssign"]!!,
+                embedOnClose = map["Embed_OnClose"]!!,
+                embedOnCloseAll = map["Embed_OnCloseAll"]!!,
+                embedOnComment = map["Embed_OnComment"]!!,
+                embedOnCreate = map["Embed_OnCreate"]!!,
+                embedOnReopen = map["Embed_OnReopen"]!!,
+                embedOnPriorityChange = map["Embed_OnPriorityChange"]!!,
+                priorityLowest = map["Priority_Lowest"]!!,
+                priorityLow = map["Priority_Low"]!!,
+                priorityNormal = map["Priority_Normal"]!!,
+                priorityHigh = map["Priority_High"]!!,
+                priorityHighest = map["Priority_Highest"]!!,
+            )
+        }
 }
 
 fun ClientLocale.Companion.buildExternalLocale(
     localeID: String,
     dataFolder: Path,
     internalVersion: ClientLocale
-): ClientLocale {
-    val map: Map<String, String> = try {
-        dataFolder.resolve("clientLocales")
-            .resolve("$localeID.yml")
-            .run(Files::newInputStream)
-            .let { Yaml().load(it) }
-    } catch (e: Exception) { mapOf() }
+): Result<ClientLocale> = createResult {
+    val map: Map<String, String> = dataFolder.resolve("clientLocales")
+        .resolve("$localeID.yml")
+        .run(Files::newInputStream)
+        .let { Yaml().load(it) }
 
-    return ClientLocale(
+    ClientLocale(
         consoleName = map["Console_Name"] ?: internalVersion.consoleName,
         nobodyName = map["Nobody_Name"] ?: internalVersion.nobodyName,
         embedOnAssign = map["Embed_OnAssign"] ?: internalVersion.embedOnAssign,

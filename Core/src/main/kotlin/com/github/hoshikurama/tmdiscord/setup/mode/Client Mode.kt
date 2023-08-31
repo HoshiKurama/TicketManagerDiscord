@@ -1,34 +1,23 @@
-package com.github.hoshikurama.tmdiscord.mode.client
+package com.github.hoshikurama.tmdiscord.setup.mode
 
 import com.github.hoshikurama.tmdiscord.*
-import com.github.hoshikurama.tmdiscord.mode.CommonConfig
-import com.github.hoshikurama.tmdiscord.mode.standardModeLoad
 import com.github.hoshikurama.tmdiscord.notifications.*
+import com.github.hoshikurama.tmdiscord.setup.config.ClientConfig
+import com.github.hoshikurama.tmdiscord.setup.config.CommonConfig
+import com.github.hoshikurama.tmdiscord.setup.locale.ClientLocale
+import com.github.hoshikurama.tmdiscord.setup.locale.buildExternalLocale
+import com.github.hoshikurama.tmdiscord.setup.locale.buildInternalLocale
+import com.github.hoshikurama.tmdiscord.setup.shared.SharedPlatform
+import com.github.hoshikurama.tmdiscord.setup.shared.initializeConfig
+import com.github.hoshikurama.tmdiscord.setup.shared.initializeLocale
 import com.github.hoshikurama.tmdiscord.utility.*
 import java.nio.file.Path
 
 private const val FILENAME = "config-client.yml"
 
-class ClientConfig(
-    // Discord Notifications
-    val notifyOnAssign: Boolean,
-    val notifyOnClose: Boolean,
-    val notifyOnCloseAll: Boolean,
-    val notifyOnComment: Boolean,
-    val notifyOnCreate: Boolean,
-    val notifyOnReopen: Boolean,
-    val notifyOnPriorityChange: Boolean,
-
-    // Bot information
-    val botToken: String,
-    val botChannelSnowflakeID: Long,
-
-    // Misc
-    val enableAVC: Boolean,
-)
-
-
 class ClientMode(
+    val commonConfig: CommonConfig,
+    val sharedPlatform: SharedPlatform,
     val clientConfig: ClientConfig,
     val locale: ClientLocale,
     val kordBot: KordBot,
@@ -47,16 +36,17 @@ class ClientMode(
 }
 
 
-suspend fun ClientMode.Companion.instance(commonConfig: CommonConfig, dataFolder: Path): Result<ClientMode> {
-    val (clientConfig, clientLocale) = standardModeLoad(
+suspend fun ClientMode.Companion.instance(
+    commonConfig: CommonConfig,
+    dataFolder: Path,
+    sharedPlatform: SharedPlatform,
+): Result<ClientMode> {
+
+    val config = initializeConfig(
         commonConfig = commonConfig,
         dataFolder = dataFolder,
         filename = FILENAME,
-        enableAVC = ClientConfig::enableAVC,
-        internalLocaleFolderName = "clientLocales",
-        buildInternalLocale = ClientLocale::buildInternalLocale,
-        buildExternalLocale = ClientLocale::buildExternalLocale,
-        buildConfig = { playerConfigMap, internalConfigMap ->
+        configBuilder = { (playerConfigMap, internalConfigMap) ->
             fun getOrDefault(ymlStr: String) = playerConfigMap[ymlStr]?.asOrNull<Boolean>()
                 ?: internalConfigMap[ymlStr]!!.asOrThrow<Boolean>()
             fun missingRequirement(value: String) = resultFailure<ClientMode>("Field $value is missing from the client config but required!")
@@ -72,23 +62,33 @@ suspend fun ClientMode.Companion.instance(commonConfig: CommonConfig, dataFolder
                 enableAVC = getOrDefault("Enable_Advanced_Visual_Control"),
                 botToken = playerConfigMap["Discord_Bot_Token"]?.asOrNull<String>()
                     ?: return missingRequirement("Discord_Bot_Token"),
-                botChannelSnowflakeID = playerConfigMap["Discord_Channel_ID"]?.asOrNull<String>()?.toLong()
+                botChannelSnowflakeID = playerConfigMap["Discord_Channel_ID"]?.asOrNull<Long>()
                     ?: return missingRequirement("Discord_Channel_ID")
             )
-        },
-    )
-        .onFailure { return Result.failure(it) }
-        .getOrThrow()
+        }
+    ).unwrapOrReturn { return Result.failure(it) }
+
+    // Build Locale
+    val locale = initializeLocale(
+        buildInternalLocale = { (name) -> ClientLocale.buildInternalLocale(name) },
+        buildExternalLocale = { (r1, r2, r3) -> ClientLocale.buildExternalLocale(r1, r2, r3) },
+        localeFolderName = "clientLocales",
+        enableAVC = ClientConfig::enableAVC,
+        commonConfig = commonConfig,
+        dataFolder = dataFolder,
+        config = config,
+        platformFuncs = sharedPlatform
+    ).unwrapOrReturn { return Result.failure(it) }
 
     // Build KordBot
-    val kordBot = KordBot.instance(clientConfig.botToken, clientConfig.botChannelSnowflakeID)
-        .onFailure { return Result.failure(it)  }
-        .getOrThrow()
-
+    val kordBot = KordBot.instance(config.botToken, config.botChannelSnowflakeID)
+        .unwrapOrReturn { return Result.failure(it)  }
 
     return ClientMode(
-        clientConfig = clientConfig,
-        locale = clientLocale,
+        commonConfig = commonConfig,
+        clientConfig = config,
+        locale = locale,
         kordBot = kordBot,
+        sharedPlatform = sharedPlatform
     ).run(Result.Companion::success)
 }
