@@ -73,7 +73,7 @@ suspend fun ClientMode.Companion.instance(commonConfig: CommonConfig, dataFolder
                 enableAVC = getOrDefault("Enable_Advanced_Visual_Control"),
                 botToken = playerConfigMap["Discord_Bot_Token"]?.asOrNull<String>()
                     ?: return missingRequirement("Discord_Bot_Token"),
-                botChannelSnowflakeID = playerConfigMap["Discord_Channel_ID"]?.asOrNull<Long>()
+                botChannelSnowflakeID = playerConfigMap["Discord_Channel_ID"]?.asOrNull<String>()?.toLong()
                     ?: return missingRequirement("Discord_Channel_ID")
             )
         },

@@ -28,7 +28,7 @@
 Discord_Bot_Token: ''
 #   Generated Discord bot token.                                                                                      #
 #   ──────────────────────────────────────────────────────────────────────────────────────────────────────────────    #
-Discord_Channel_ID: -1
+Discord_Channel_ID: "-1"
 #   Text Channel ID of the channel the bot should send messages to.                                                   #
 #   ──────────────────────────────────────────────────────────────────────────────────────────────────────────────    #
 #                                                                                                                     #
