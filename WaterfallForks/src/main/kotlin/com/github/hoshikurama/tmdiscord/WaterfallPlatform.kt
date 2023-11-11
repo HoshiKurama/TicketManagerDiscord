@@ -46,7 +46,7 @@ class WaterfallPlatform: Plugin() {
         }
 
         val primaryDataFolder = dataFolder.toPath()
-            .resolveSibling("TicketManager")
+            .resolveSibling("TicketManager-Waterfall-Bridge")
             .resolve("addons")
             .resolve("DiscordBot")
 
