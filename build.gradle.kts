@@ -1,7 +1,5 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
-    kotlin("jvm") version "1.9.10"
+    kotlin("jvm") version "1.9.20"
     id("com.github.johnrengelman.shadow") version "8.1.1"
     application
 }
@@ -30,16 +28,5 @@ tasks {
             include(project(":Velocity"))
             include(project(":WaterfallForks"))
         }
-    }
-}
-
-subprojects {
-    tasks.withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = "17"
-    }
-
-    tasks.withType<JavaCompile> {
-        sourceCompatibility = "17"
-        targetCompatibility = "17"
     }
 }
