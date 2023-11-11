@@ -1,11 +1,9 @@
 package com.github.hoshikurama.tmdiscord.utility
 
-import com.github.hoshikurama.ticketmanager.api.common.commands.CommandSender
-import com.github.hoshikurama.ticketmanager.api.common.ticket.Action
-import com.github.hoshikurama.ticketmanager.api.common.ticket.ActionInfo
-import com.github.hoshikurama.ticketmanager.api.common.ticket.Assignment
+import com.github.hoshikurama.ticketmanager.api.CommandSender
+import com.github.hoshikurama.ticketmanager.api.events.*
+import com.github.hoshikurama.ticketmanager.api.ticket.Assignment
 import com.github.hoshikurama.tmdiscord.setup.shared.CommonLocaleWords
-import com.github.hoshikurama.tmdiscord.Target
 import com.github.hoshikurama.tmdiscord.Targets
 import com.github.hoshikurama.tmdiscord.notifications.*
 
@@ -35,14 +33,14 @@ inline fun <T> createResult(f: () -> T): Result<T> {
 inline fun <T> Result<T>.unwrapOrReturn(onError: (Throwable) -> Unit): T {
     if (isSuccess) return getOrThrow()
     onError(exceptionOrNull()!!)
-    TODO("Invalid use of unwrapOrReturn(). Make sure to perform a local return where called!")
+    throw Exception("Invalid use of unwrapOrReturn(). Make sure to perform a local return where called!")
 }
 
 // Other
 
 fun CommandSender.Active.asTarget(locale: CommonLocaleWords) = when (this) {
-    is CommandSender.Active.OnlineConsole -> Targets.Console(locale.consoleName)
-    is CommandSender.Active.OnlinePlayer -> Targets.User(username)
+    is CommandSender.OnlineConsole -> Targets.Console(locale.consoleName)
+    is CommandSender.OnlinePlayer -> Targets.User(username)
 }
 
 fun Assignment.toTarget(locale: CommonLocaleWords) = when (this) {
@@ -53,47 +51,47 @@ fun Assignment.toTarget(locale: CommonLocaleWords) = when (this) {
     is Assignment.Player -> Targets.User(username)
 }
 
-fun convertActionInfoToNotification(
-    ticketNumber: Long,
-    modOrigin: Target,
-    action: Action,
-    commonLocale: CommonLocaleWords
-) = when (action) {
-    is ActionInfo.Assign -> Assign(
-        assignment = action.assignment.toTarget(commonLocale),
-        ticketID = ticketNumber,
-        user = modOrigin,
+fun convertEventToNotification(
+    event: TicketEvent.WithAction,
+    locale: CommonLocaleWords,
+) = when (event) {
+    is TicketAssignEvent -> Assign(
+        assignment = event.action.assignment.toTarget(locale),
+        user = event.commandSender.asTarget(locale),
+        ticketID = event.id,
     )
-    is ActionInfo.CloseWithComment -> Close(
-        comment = action.comment,
-        ticketID = ticketNumber,
-        user = modOrigin,
+    is TicketCloseWithCommentEvent -> Close(
+        user = event.commandSender.asTarget(locale),
+        comment = event.action.comment,
+        ticketID = event.id,
     )
-    is ActionInfo.CloseWithoutComment -> Close(
-        ticketID = ticketNumber,
-        user = modOrigin,
+    is TicketCloseWithoutCommentEvent -> Close(
+        user = event.commandSender.asTarget(locale),
+        ticketID = event.id,
         comment = null,
     )
-    is ActionInfo.Comment -> Comment(
-        comment = action.comment,
-        ticketID = ticketNumber,
-        user = modOrigin,
+    is TicketCommentEvent -> Comment(
+        user = event.commandSender.asTarget(locale),
+        comment = event.action.comment,
+        ticketID = event.id,
     )
-    is ActionInfo.MassClose -> CloseAll(
-        user = modOrigin,
+    is TicketCreateEvent -> Create(
+        user = event.commandSender.asTarget(locale),
+        comment = event.action.message,
+        ticketID = event.id,
     )
-    is ActionInfo.Open -> Create(
-        comment = action.message,
-        ticketID = ticketNumber,
-        user = modOrigin,
+    is TicketReopenEvent -> Reopen(
+        user = event.commandSender.asTarget(locale),
+        ticketID = event.id,
     )
-    is ActionInfo.Reopen -> Reopen(
-        ticketID = ticketNumber,
-        user = modOrigin,
+    is TicketSetPriorityEvent -> ChangePriority(
+        user = event.commandSender.asTarget(locale),
+        priority = event.action.priority,
+        ticketID = event.id,
     )
-    is ActionInfo.SetPriority -> ChangePriority(
-        priority = action.priority,
-        ticketID = ticketNumber,
-        user = modOrigin,
+    is TicketMassCloseEvent -> CloseAll(
+        user = event.commandSender.asTarget(locale),
+        upper = event.upperBound,
+        lower = event.lowerBound,
     )
 }

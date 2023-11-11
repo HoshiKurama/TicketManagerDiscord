@@ -6,14 +6,14 @@ import dev.kord.rest.builder.message.EmbedBuilder
 
 class CloseAll(
     private val user: Target,
-    //private val lower: Long,
-    //private val upper: Long,
+    private val lower: Long,
+    private val upper: Long,
 ) : Notification {
 
     override val embedBuilder: EmbedBuilder.(ClientLocale) -> Unit = {
         field {
             name = it.embedOnCloseAll.replace("%user%", user.name)
-            value = " " //"#$lower - #$upper"
+            value = "#$lower - #$upper"
             inline = false
         }
     }
@@ -21,7 +21,7 @@ class CloseAll(
     override fun serialize(): ByteArray = createByteArrayMessage {
         writeUTF(Notification.Type.CLOSE_ALL.name)
         writeUTF(user.serialize())
-        //writeLong(lower)
-        //writeLong(upper)
+        writeLong(lower)
+        writeLong(upper)
     }
 }

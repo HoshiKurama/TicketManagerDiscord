@@ -1,14 +1,13 @@
 package com.github.hoshikurama.tmdiscord
 
-import com.github.hoshikurama.ticketmanager.api.paper.events.AsyncTicketModifyEvent
+import com.github.hoshikurama.ticketmanager.api.events.*
+import com.github.hoshikurama.ticketmanager.api.impl.TicketManager
 import com.github.hoshikurama.tmdiscord.setup.config.CommonConfig
 import com.github.hoshikurama.tmdiscord.setup.mode.RelayMode
 import com.github.hoshikurama.tmdiscord.setup.mode.ClientMode
 import com.github.hoshikurama.tmdiscord.setup.mode.Mode
 import com.github.hoshikurama.tmdiscord.setup.mode.instance
-import com.github.hoshikurama.tmdiscord.setup.shared.CommonLocaleWords
-import com.github.hoshikurama.tmdiscord.utility.asTarget
-import com.github.hoshikurama.tmdiscord.utility.convertActionInfoToNotification
+import com.github.hoshikurama.tmdiscord.utility.convertEventToNotification
 import com.github.hoshikurama.tmdiscord.utility.unwrapOrReturn
 import kotlinx.coroutines.*
 import org.bukkit.Bukkit
@@ -16,7 +15,6 @@ import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
-import org.bukkit.event.EventHandler
 import org.bukkit.event.HandlerList
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
@@ -24,8 +22,13 @@ import java.nio.file.Path
 
 @Suppress("unused")
 class BukkitPlatform : JavaPlugin(), Listener, CommandExecutor {
+    private val eventSubscribers = mutableSetOf<() -> Unit>()
     private var client: ClientMode? = null
     private var relay: RelayMode? = null
+
+    private var clientModeUnregisterListener: (() -> Unit)? = null
+    private var relayModeUnregisterListener: (() -> Unit)? = null
+
 
     @OptIn(ExperimentalCoroutinesApi::class, DelicateCoroutinesApi::class)
     private val kordThread = newSingleThreadContext("TMDiscordBot_Kord")
@@ -49,6 +52,18 @@ class BukkitPlatform : JavaPlugin(), Listener, CommandExecutor {
             logger.severe("An unrecoverable error occurred!")
             clientResult.exceptionOrNull()?.printStackTrace()
         }
+
+        // Subscribe to event
+        clientModeUnregisterListener = TicketManager.EventBus.subscribe<TicketEvent.WithAction> { event ->
+            if (event is TicketEvent.CanBeSilent && event.wasSilent) return@subscribe
+
+            val clientNow = client ?: return@subscribe
+            val notification = convertEventToNotification(event, clientNow.locale)
+
+            if (clientNow.canSendMessage(notification)) kordScope.launch {
+                clientNow.kordBot.pushMessage(notification, clientNow.locale)
+            }
+        }
     }
 
     private fun setupRelayMode(commonConfig: CommonConfig, primaryDataFolder: Path) {
@@ -60,6 +75,21 @@ class BukkitPlatform : JavaPlugin(), Listener, CommandExecutor {
 
         if (relayResult.isSuccess)
             relay = relayResult.getOrThrow()
+        else {
+            logger.severe("An unrecoverable error occurred!")
+            relayResult.exceptionOrNull()?.printStackTrace()
+        }
+
+        // Subscribe to event
+        relayModeUnregisterListener = TicketManager.EventBus.subscribe<TicketEvent.WithAction> { event ->
+            if (event is TicketEvent.CanBeSilent && event.wasSilent) return@subscribe
+
+            val relayNow = relay ?: return@subscribe
+            val notification = convertEventToNotification(event, relayNow.locale)
+
+            if (relayNow.canSendMessage(notification))
+                server.sendPluginMessage(this, Server2Proxy.DiscordMessage.waterfallString(), notification.serialize())
+        }
     }
 
     private suspend fun setup() {
@@ -96,41 +126,21 @@ class BukkitPlatform : JavaPlugin(), Listener, CommandExecutor {
     }
 
     override fun onDisable() {
+        clientModeUnregisterListener?.invoke()
+        relayModeUnregisterListener?.invoke()
+
         server.messenger.unregisterOutgoingPluginChannel(this)
         HandlerList.unregisterAll(this as Listener)
         runBlocking {
             client?.kordBot?.logout()
+            delay(1000)
+            /*
+                Above is a shitty workaround for KordLib. shutdown() doesn't fully wait for things to shut down, so
+                things are still operating even after the JAR file has been unloaded. Delaying here delays unload to
+                hopefully give KordLib time to do what it needs.
+             */
         }
         kordThread.close()
-    }
-
-    @EventHandler
-    @Suppress("unused")
-    fun onTMModify(modifyEvent: AsyncTicketModifyEvent) {
-        if (modifyEvent.wasSilent) return
-
-        val relayNow = relay
-        val clientNow = client
-
-        val buildNotification = { event: AsyncTicketModifyEvent, locale: CommonLocaleWords ->
-            val userTarget = event.commandSender.asTarget(locale)
-            convertActionInfoToNotification(
-                ticketNumber = event.ticketNumber,
-                modOrigin = userTarget,
-                action = event.modification,
-                commonLocale = locale
-            )
-        }
-
-        if (relayNow != null) {
-            val notification = buildNotification(modifyEvent, relayNow.locale)
-            if (relayNow.canSendMessage(notification))
-                server.sendPluginMessage(this, Server2Proxy.DiscordMessage.waterfallString(), notification.serialize())
-        } else if (clientNow != null) {
-            val notification = buildNotification(modifyEvent, clientNow.locale)
-            if (clientNow.canSendMessage(notification))
-                kordScope.launch { clientNow.kordBot.pushMessage(notification, clientNow.locale) }
-        }
     }
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
@@ -138,6 +148,9 @@ class BukkitPlatform : JavaPlugin(), Listener, CommandExecutor {
         if (sender is Player && !sender.hasPermission("tmdiscord.reload")) return false
 
         runOnMainThread {
+            clientModeUnregisterListener?.invoke()
+            relayModeUnregisterListener?.invoke()
+
             // Unregister things
             server.messenger.unregisterOutgoingPluginChannel(this)
             HandlerList.unregisterAll(this as Listener)
