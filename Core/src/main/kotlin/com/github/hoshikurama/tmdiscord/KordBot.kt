@@ -13,7 +13,7 @@ class KordBot(
     private val channel: MessageChannelBehavior,
 ) {
     suspend fun login() = kord.login()
-    suspend fun logout() = kord.logout()
+    suspend fun logout() = kord.shutdown()
 
     suspend fun pushMessage(msg: Notification, locale: ClientLocale) {
         channel.createEmbed { msg.embedBuilder(this, locale) }
