@@ -16,6 +16,8 @@ import java.nio.file.Path
 private const val FILENAME = "config-client.yml"
 
 class ClientMode(
+    val commonConfig: CommonConfig,
+    val sharedPlatform: SharedPlatform,
     val clientConfig: ClientConfig,
     val locale: ClientLocale,
     val kordBot: KordBot,
@@ -60,7 +62,7 @@ suspend fun ClientMode.Companion.instance(
                 enableAVC = getOrDefault("Enable_Advanced_Visual_Control"),
                 botToken = playerConfigMap["Discord_Bot_Token"]?.asOrNull<String>()
                     ?: return missingRequirement("Discord_Bot_Token"),
-                botChannelSnowflakeID = playerConfigMap["Discord_Channel_ID"]?.asOrNull<String>()?.toLong()
+                botChannelSnowflakeID = playerConfigMap["Discord_Channel_ID"]?.asOrNull<String>()?.toLongOrNull()
                     ?: return missingRequirement("Discord_Channel_ID")
             )
         }
@@ -83,8 +85,10 @@ suspend fun ClientMode.Companion.instance(
         .unwrapOrReturn { return Result.failure(it)  }
 
     return ClientMode(
+        commonConfig = commonConfig,
         clientConfig = config,
         locale = locale,
-        kordBot = kordBot
+        kordBot = kordBot,
+        sharedPlatform = sharedPlatform
     ).run(Result.Companion::success)
 }
