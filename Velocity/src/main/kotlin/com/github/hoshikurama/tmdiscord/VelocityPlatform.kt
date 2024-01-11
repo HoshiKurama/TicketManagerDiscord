@@ -27,7 +27,7 @@ import java.nio.file.Path
 @Plugin(
     id = "tmdiscordbot",
     name = "TicketManager_Discord_Bot",
-    version = "2.0.0",
+    version = "3.0.0",
     description = "Official Discord Bot for TicketManager",
     authors = ["HoshiKurama"],
 )
@@ -66,19 +66,14 @@ class VelocityPlatform @Inject constructor(
             e.printStackTrace()
         }
 
-        val primaryDataFolder = dataDirectory
-            .resolveSibling("TicketManager")
-            .resolve("addons")
-            .resolve("DiscordBot")
-
-        val commonConfig = CommonConfig.load(primaryDataFolder)
+        val commonConfig = CommonConfig.load(dataDirectory)
             .unwrapOrReturn {
                 printUnrecoverableError(it)
                 return
             }
 
         when (commonConfig.mode) {
-            Mode.Enum.CLIENT -> setupClientMode(commonConfig, primaryDataFolder)
+            Mode.Enum.CLIENT -> setupClientMode(commonConfig, dataDirectory)
             Mode.Enum.RELAY -> {
                 logger.error("Relay Mode is NOT allowed on proxies!")
                 return
