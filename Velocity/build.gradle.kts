@@ -1,9 +1,8 @@
 plugins {
     kotlin("jvm")
-    id("com.github.ben-manes.versions") version "0.47.0"
+    id("com.github.ben-manes.versions") version "0.50.0"
     id("com.github.johnrengelman.shadow") version "8.1.1"
     application
-    java
 }
 
 application {
@@ -25,7 +24,7 @@ repositories {
 dependencies {
     compileOnly("com.velocitypowered:velocity-api:3.2.0-SNAPSHOT")
     annotationProcessor("com.velocitypowered:velocity-api:3.2.0-SNAPSHOT")
-    implementation("com.github.HoshiKurama.TicketManager_API:Common:11.0.0-RC7")
+    implementation("com.github.HoshiKurama.TicketManager_API:Common:11.0.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.3")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")

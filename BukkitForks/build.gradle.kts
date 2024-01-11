@@ -1,9 +1,8 @@
 plugins {
     kotlin("jvm")
-    id("com.github.ben-manes.versions") version "0.49.0"
+    id("com.github.ben-manes.versions") version "0.50.0"
     id("com.github.johnrengelman.shadow") version "8.1.1"
     application
-    java
 }
 
 application {
@@ -21,7 +20,7 @@ repositories {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.20-R0.1-SNAPSHOT")
-    compileOnly("com.github.HoshiKurama.TicketManager_API:Common:11.0.0-RC7")
+    compileOnly("com.github.HoshiKurama.TicketManager_API:Common:11.0.1")
     compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
     compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.3")
     implementation(project(":Core"))
