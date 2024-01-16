@@ -1,3 +1,6 @@
+### IMPORTANT NOTE: This project has been abandoned until further notice. Use at your own risk. No support will be provided! Feel free to fork this project!
+---
+
 # TMDiscordBot
 TMDiscordBot is an addon which pushes ticket creations and modifications from TicketManager to Discord. Users can additionally choose which ticket actions appear in Discord via the configuration file.
 
